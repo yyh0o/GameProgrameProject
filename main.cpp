@@ -3,57 +3,11 @@
 #include "Renderer.h"
 #include "windows.h"
 #include "Spirit.h"
+#include "config.h"
 
-
-//typedef struct {
-//    int x;
-//    int y;
-//    char c;
-//    Renderer &renderer;
-//} Spirit;
-
-//DWORD WINAPI animation(LPVOID lpParameter){
-//    Spirit *me = (Spirit*)lpParameter;
-//    while (1){
-//        me->renderer.drawChar(me->x, me->y, 'o');
-//        me->renderer.changeFlag();
-//        Sleep(300);
-//        me->renderer.drawChar(me->x, me->y, 'O');
-//        me->renderer.changeFlag();
-//        Sleep(300);
-//    }
-//}
-
-DWORD WINAPI renderer_update(LPVOID lpParameter){
-//    std::cout << "in" << std::endl;
-    Renderer *renderer = nullptr;
-    if(lpParameter){
-        renderer = (Renderer *)lpParameter;
-        while(TRUE){
-//            std::cout << (*renderer->frame)[2][2] << std::endl;
-            renderer->update();
-            WaitForMultipleObjects(1, renderer->getUpdateEvent(), FALSE, INFINITE);
-        }
-    }
-    return 0;
-}
-DWORD WINAPI renderer_display(LPVOID lpParameter){
-    Renderer *renderer = nullptr;
-    if(lpParameter){
-        renderer = (Renderer *)lpParameter;
-        renderer->display();
-    }
-    return 0;
-}
-
-VOID CALLBACK TimeProc(PVOID lpParameter, BOOLEAN TimerOrWaitFired){
-    Renderer *renderer = nullptr;
-//    std::cout << "timer" << std::endl;
-    if(lpParameter){
-        renderer = (Renderer *)lpParameter;
-        renderer->timeBat();
-    }
-}
+DWORD WINAPI renderer_update(LPVOID lpParameter);
+DWORD WINAPI renderer_display(LPVOID lpParameter);
+VOID CALLBACK TimeProc(PVOID lpParameter, BOOLEAN TimerOrWaitFired);
 
 int main() {
     Renderer renderer(25, 25);
@@ -96,23 +50,11 @@ int main() {
             (WAITORTIMERCALLBACK)TimeProc,
             &renderer,
             0,
-            200,
+            ANIMATION_DELAY,
             0
             );
     CreateThread(NULL, 0, renderer_update, &renderer, 0, NULL);
     CreateThread(NULL, 0, renderer_display, &renderer, 0, NULL);
-//    while(1){
-//        renderer.update();
-////        renderer.display();
-//    }
-//    std::cout << "Hello, World!" << std::endl;
-//    Renderer renderer(25, 15);
-//    Spirit me = {5,5, 'o', renderer};
-////    int color;
-////    std::cin >> color;
-//    renderer.flash();
-//    HANDLE renderThread = CreateThread(NULL, 0, render, &renderer, 0, NULL);
-//    HANDLE animationThread = CreateThread(NULL, 0, animation, &me, 0, NULL);
     while(1){
         if(_kbhit()){
             int ch = _getch();
@@ -142,4 +84,35 @@ int main() {
         }
     }
 //    return 0;
+}
+
+DWORD WINAPI renderer_update(LPVOID lpParameter){
+//    std::cout << "in" << std::endl;
+    Renderer *renderer = nullptr;
+    if(lpParameter){
+        renderer = (Renderer *)lpParameter;
+        while(TRUE){
+//            std::cout << (*renderer->frame)[2][2] << std::endl;
+            renderer->update();
+            WaitForMultipleObjects(1, renderer->getUpdateEvent(), FALSE, INFINITE);
+        }
+    }
+    return 0;
+}
+DWORD WINAPI renderer_display(LPVOID lpParameter){
+    Renderer *renderer = nullptr;
+    if(lpParameter){
+        renderer = (Renderer *)lpParameter;
+        renderer->display();
+    }
+    return 0;
+}
+
+VOID CALLBACK TimeProc(PVOID lpParameter, BOOLEAN TimerOrWaitFired){
+    Renderer *renderer = nullptr;
+//    std::cout << "timer" << std::endl;
+    if(lpParameter){
+        renderer = (Renderer *)lpParameter;
+        renderer->timeBat();
+    }
 }

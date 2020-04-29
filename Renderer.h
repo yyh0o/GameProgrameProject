@@ -7,7 +7,7 @@
 #include <iostream>
 #include <vector>
 #include <windows.h>
-#include "utility.h"
+#include "config.h"
 #include "Spirit.h"
 
 class Renderer {

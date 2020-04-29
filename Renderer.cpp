@@ -59,7 +59,7 @@ void Renderer::display() {
             }
             is_handle_1 = !is_handle_1;
             SetConsoleActiveScreenBuffer(handle);
-            Sleep(17);
+            Sleep(SCREEN_DELAY);
         }
 }
 
