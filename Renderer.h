@@ -36,6 +36,8 @@ public:
     static void drawFrame(Frame *source_frame, Frame *des_frame, int x, int y, int w, int h);
     static void drawSpirit(Frame* des_frame, Spirit* spirit);
     void addSpirit(Spirit *spirit);
+    void updateBackground(Spirit *background);
+    void updateForeground(Spirit *foreground);
 };
 
 

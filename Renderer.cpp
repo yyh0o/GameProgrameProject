@@ -123,5 +123,13 @@ PHANDLE Renderer::getUpdateEvent() {
     return &update_event;
 }
 
+void Renderer::updateBackground(Spirit *background) {
+    background_spirit = background;
+}
+
+void Renderer::updateForeground(Spirit *foreground) {
+    foreground_spirit = foreground;
+}
+
 
 
