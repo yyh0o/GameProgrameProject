@@ -5,26 +5,24 @@
 #include <iostream>
 #include "Renderer.h"
 
-void Renderer::changeFlag() {
-        is_frame_1 = !is_frame_1;
-}
-
 Renderer::Renderer(int w, int h) {
     width = w;
     height = h;
-    frame = std::vector<std::vector<char>>(h);
+    frame_buffer_1 = std::vector<std::vector<char>>(h);
+    frame_buffer_2 = std::vector<std::vector<char>>(h);
     for (int i = 0; i < h; ++i) {
-        frame[i] = std::vector<char>(w);
+        frame_buffer_1[i] = std::vector<char>(w);
+        frame_buffer_2[i] = std::vector<char>(w);
     }
     is_frame_1 = true;
-    consoleHandle1 = CreateConsoleScreenBuffer(
+    console_handle_1 = CreateConsoleScreenBuffer(
             GENERIC_WRITE,
             FILE_SHARE_WRITE,
             NULL,
             CONSOLE_TEXTMODE_BUFFER,
             NULL
             );
-    consoleHandle2 = CreateConsoleScreenBuffer(
+    console_handle_2 = CreateConsoleScreenBuffer(
             GENERIC_WRITE,
             FILE_SHARE_WRITE,
             NULL,
@@ -34,80 +32,96 @@ Renderer::Renderer(int w, int h) {
     CONSOLE_CURSOR_INFO cci;
     cci.bVisible = 0;
     cci.dwSize = 1;
-    SetConsoleCursorInfo(consoleHandle1, &cci);
-    SetConsoleCursorInfo(consoleHandle2, &cci);
+    SetConsoleCursorInfo(console_handle_1, &cci);
+    SetConsoleCursorInfo(console_handle_2, &cci);
+    is_handle_1 = true;
+    update_event = CreateEvent(NULL, FALSE, FALSE, NULL);
+    background_spirit = NULL;
+    foreground_spirit = NULL;
+    frame = &frame_buffer_1;
 }
 
-void Renderer::render() {
-    HANDLE handle;
-    char a;
-    if (is_frame_1){
-        handle = consoleHandle1;
-#ifdef DEBUG
-        a = '1';
-#endif
+void Renderer::display() {
+        while (true) {
+            HANDLE handle;
+            if(is_handle_1){
+                handle = console_handle_2;
+            }
+            else {
+                handle = console_handle_1;
+            }
+            for (int i = 0; i < height; ++i) {
+                coord.Y = i;
+                for (int j = 0; j < width; ++j) {
+                    coord.X = j;
+                    WriteConsoleOutputCharacterA(handle, &((*frame)[i][j]), 1, coord, &bytes);
+                }
+            }
+            is_handle_1 = !is_handle_1;
+            SetConsoleActiveScreenBuffer(handle);
+            Sleep(17);
+        }
+}
+
+void Renderer::update() {
+    Frame* frame_buffer;
+    if(is_frame_1) {
+        frame_buffer = &frame_buffer_2;
     }
-    else{
-        handle = consoleHandle2;
-#ifdef DEBUG
-        a = '2';
-#endif
+    else {
+        frame_buffer = &frame_buffer_1;
     }
+    flash(frame_buffer);
+    if (background_spirit){
+        drawSpirit(frame_buffer, background_spirit);
+    }
+    for (auto item : spirit_list){
+        drawSpirit(frame_buffer, item);
+    }
+    if (foreground_spirit){
+        drawSpirit(frame_buffer, foreground_spirit);
+    }
+    frame = frame_buffer;
+    is_frame_1 = !is_frame_1;
+}
+
+void Renderer::drawFrame(Frame *source_frame, Frame *des_frame, int x, int y, int w, int h) {
+    for (int i = 0; i < h; ++i) {
+        int pos_y = y + i;
+        for (int j = 0; j < w; ++j) {
+            int pos_x = x + j;
+            // 未检测越界
+            (*des_frame)[pos_y][pos_x] = (*source_frame)[i][j];
+        }
+    }
+}
+
+void Renderer::drawSpirit(Frame *des_frame, Spirit *spirit) {
+    Frame *source;
+    source = spirit->getCurrentFrame();
+    spirit->updateFrame();
+    drawFrame(source, des_frame, spirit->getX(), spirit->getY(), spirit->getWidth(), spirit->getHeight());
+}
+
+void Renderer::flash(Frame *buffer) const {
     for (int i = 0; i < height; ++i) {
-            coord.Y = i;
         for (int j = 0; j < width; ++j) {
-            coord.X = j;
-            WriteConsoleOutputCharacterA(handle, &frame[i][j], 1, coord, &bytes);
-        }
-    }
-#ifdef DEBUG
-    WriteConsoleOutputCharacterA(handle, &a, 1, coord, &bytes);
-#endif
-    SetConsoleActiveScreenBuffer(handle);
-}
-
-void Renderer::drawArea(int left_x, int top_y, int right_x, int bottom_y, const std::vector<char>& info) {
-    if (left_x < 0 || top_y < 0 || bottom_y >= height || right_x >= width){
-        std::cerr << "out of range" << std::endl;
-        return;
-    }
-    int w = left_x - right_x + 1;
-    int h = bottom_y - top_y + 1;
-    if (info.size() > w * h){
-        std::cerr << "out of bond" << std::endl;
-        return;
-    }
-
-    for (int i = 0; i < info.size(); ++i) {
-        frame[top_y + i/h][left_x + i % w] = {info[i]};
-    }
-}
-
-void Renderer::flash() {
-    for (int i = 0; i < height; ++i) {
-        for (int j = 0; j < width; ++j) {
-            frame[i][j] = ' ';
+            (*buffer)[i][j] = ' ';
         }
     }
 }
 
-void Renderer::drawChar(int x, int y, char character) {
-    if (x < 0 || x >= width || y < 0 || y > height){
-        std::cerr << "out of range" << std::endl;
-    }
-    frame[x][y] = character;
+void Renderer::addSpirit(Spirit *spirit) {
+    spirit_list.push_back(spirit);
 }
 
-void Renderer::fillArea(int left_x, int top_y, int right_x, int bottom_y, char filler) {
-    if (left_x < 0 || top_y < 0 || bottom_y >= height || right_x >= width){
-        std::cerr << "out of range" << std::endl;
-        return;
-    }
-    for (int i = top_y; i <= bottom_y; ++i) {
-        for (int j = left_x; j <= right_x; ++j) {
-            frame[i][j] = filler;
-        }
-    }
+void Renderer::timeBat() {
+    SetEvent(update_event);
 }
+
+PHANDLE Renderer::getUpdateEvent() {
+    return &update_event;
+}
+
 
 

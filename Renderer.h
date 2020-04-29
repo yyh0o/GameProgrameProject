@@ -7,31 +7,35 @@
 #include <iostream>
 #include <vector>
 #include <windows.h>
-
-typedef struct{
-    char character;
-    int color;
-} UNIT;
-
-typedef std::vector<std::vector<char>> Frame;
+#include "utility.h"
+#include "Spirit.h"
 
 class Renderer {
     int width;
     int height;
-    Frame frame;
+    Frame frame_buffer_1;
+    Frame frame_buffer_2;
     bool is_frame_1;
-    int sleep_time = 17;
-    HANDLE consoleHandle1, consoleHandle2;
+    int sleep_time = 10;
+    HANDLE console_handle_1, console_handle_2;
+    bool is_handle_1;
     COORD coord = {0, 0};
     DWORD bytes = 0;
+    Spirit* background_spirit{};
+    Spirit* foreground_spirit{};
+    std::vector<Spirit*> spirit_list;
+    HANDLE update_event;
 public:
-    Renderer(int w, int h);
-    void render();
-    void drawArea(int left_x, int top_y, int right_x, int bottom_y, const std::vector<char>& info);
-    void fillArea(int left_x, int top_y, int right_x, int bottom_y, char filler);
-    void flash();
-    void changeFlag();
-    void drawChar(int x, int y, char character);
+    Frame* frame;
+    PHANDLE getUpdateEvent();
+    void display();
+    void update();
+    void timeBat();
+    Renderer(int width, int height);
+    void flash(Frame* buffer) const;
+    static void drawFrame(Frame *source_frame, Frame *des_frame, int x, int y, int w, int h);
+    static void drawSpirit(Frame* des_frame, Spirit* spirit);
+    void addSpirit(Spirit *spirit);
 };
 
 
