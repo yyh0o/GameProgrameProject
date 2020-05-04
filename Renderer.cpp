@@ -8,11 +8,11 @@
 Renderer::Renderer(int w, int h) {
     width = w;
     height = h;
-    frame_buffer_1 = std::vector<std::vector<char>>(h);
-    frame_buffer_2 = std::vector<std::vector<char>>(h);
+    frame_buffer_1 = Frame(h);
+    frame_buffer_2 = Frame(h);
     for (int i = 0; i < h; ++i) {
-        frame_buffer_1[i] = std::vector<char>(w);
-        frame_buffer_2[i] = std::vector<char>(w);
+        frame_buffer_1[i] = Frame_1d(w);
+        frame_buffer_2[i] = Frame_1d(w);
     }
     is_frame_1 = true;
     console_handle_1 = CreateConsoleScreenBuffer(
@@ -76,7 +76,9 @@ void Renderer::update() {
         drawSpirit(frame_buffer, background_spirit);
     }
     for (auto item : spirit_list){
-        drawSpirit(frame_buffer, item);
+        if(item->isVisible()){
+            drawSpirit(frame_buffer, item);
+        }
     }
     if (foreground_spirit){
         drawSpirit(frame_buffer, foreground_spirit);
@@ -91,7 +93,9 @@ void Renderer::drawFrame(Frame *source_frame, Frame *des_frame, int x, int y, in
         for (int j = 0; j < w; ++j) {
             int pos_x = x + j;
             // 未检测越界
-            (*des_frame)[pos_y][pos_x] = (*source_frame)[i][j];
+            char source_char = (*source_frame)[i][j];
+            if (source_char == NOT_SHOW){ continue;}
+            (*des_frame)[pos_y][pos_x] = source_char;
         }
     }
 }

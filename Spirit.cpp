@@ -4,6 +4,7 @@
 
 #include "Spirit.h"
 Spirit::Spirit(int p_x, int p_y, std::vector<Frame*> &animation_frames){
+    visible = true;
     position_x = p_x;
     position_y = p_y;
     width = 1;
@@ -12,6 +13,7 @@ Spirit::Spirit(int p_x, int p_y, std::vector<Frame*> &animation_frames){
     current_frame = animation_key_frames.begin();
 }
 Spirit::Spirit(int p_x, int p_y, int width, int height, std::vector<Frame*> &animation_frames){
+    visible = true;
     position_x = p_x;
     position_y = p_y;
     this->width = width;
@@ -40,21 +42,47 @@ void Spirit::updateFrame() {
     }
 }
 
-Frame *Spirit::getFrame(char c) {
+Frame *Spirit::generateFrame(char c) {
     Frame *frame = new Frame();
-    frame->push_back(std::vector<char>(0));
+    frame->push_back(Frame_1d(0));
     (*frame)[0].push_back(c);
     return frame;
 }
 
-Frame *Spirit::getFrame(char c[], int height, int width) {
+Frame *Spirit::generateFrame(const char *c, int height, int width) {
     Frame *frame = new Frame(height);
     for (int i = 0; i < height; ++i) {
-        std::vector<char> tmp(width);
+        Frame_1d tmp(width);
         for (int j = 0; j < width; ++j) {
             tmp[j] = c[i*width + j];
         }
         (*frame)[i] = tmp;
     }
     return frame;
+}
+
+Spirit::Spirit(bool isVisible, int px, int py, int w, int h, std::vector<Frame *> &animation_frames) {
+    visible = isVisible;
+    position_x = px;
+    position_y = py;
+    width = w;
+    height = h;
+    animation_key_frames = animation_frames;
+}
+
+Spirit::Spirit(bool isVisible, int p_x, int p_y, std::vector<Frame *> &animation_frames) {
+    visible = isVisible;
+    position_x = p_x;
+    position_y = p_y;
+    width = 1;
+    height = 1;
+    animation_key_frames = animation_frames;
+}
+
+void Spirit::setVisible(bool isVisible) {
+    visible = isVisible;
+}
+
+bool Spirit::isVisible() {
+    return visible;
 }
