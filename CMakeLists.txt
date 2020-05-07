@@ -3,4 +3,4 @@ project(MIni_Game)
 
 set(CMAKE_CXX_STANDARD 14)
 
-add_executable(Mini_Game main.cpp Renderer.cpp Spirit.cpp)
+add_executable(Mini_Game main.cpp Renderer.cpp Spirit.cpp Controller.cpp Controller.h)

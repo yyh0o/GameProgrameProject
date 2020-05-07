@@ -10,7 +10,10 @@
 #include "config.h"
 #include "Spirit.h"
 
+
+
 class Renderer {
+    HANDLE updated_event = INVALID_HANDLE_VALUE;
     int width;
     int height;
     Frame frame_buffer_1;
@@ -38,6 +41,10 @@ public:
     void addSpirit(Spirit *spirit);
     void updateBackground(Spirit *background);
     void updateForeground(Spirit *foreground);
+
+    static DWORD WINAPI renderer_update(LPVOID lpParameter);
+    static DWORD WINAPI renderer_display(LPVOID lpParameter);
+    static VOID CALLBACK TimeProc(PVOID lpParameter, BOOLEAN TimerOrWaitFired);
 };
 
 

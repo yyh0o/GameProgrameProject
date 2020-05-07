@@ -68,6 +68,7 @@ Spirit::Spirit(bool isVisible, int px, int py, int w, int h, std::vector<Frame *
     width = w;
     height = h;
     animation_key_frames = animation_frames;
+    current_frame = animation_key_frames.begin();
 }
 
 Spirit::Spirit(bool isVisible, int p_x, int p_y, std::vector<Frame *> &animation_frames) {
@@ -77,6 +78,7 @@ Spirit::Spirit(bool isVisible, int p_x, int p_y, std::vector<Frame *> &animation
     width = 1;
     height = 1;
     animation_key_frames = animation_frames;
+    current_frame = animation_key_frames.begin();
 }
 
 void Spirit::setVisible(bool isVisible) {

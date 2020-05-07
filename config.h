@@ -6,7 +6,7 @@
 #define MINI_GAME_CONFIG_H
 
 
-#define SCREEN_DELAY 17
+#define SCREEN_DELAY 20
 #define ANIMATION_DELAY 200
 
 

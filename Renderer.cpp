@@ -6,6 +6,7 @@
 #include "Renderer.h"
 
 Renderer::Renderer(int w, int h) {
+    updated_event = CreateEvent(NULL, false, false, "update_event");
     width = w;
     height = h;
     frame_buffer_1 = Frame(h);
@@ -50,6 +51,7 @@ void Renderer::display() {
             else {
                 handle = console_handle_1;
             }
+            WaitForSingleObject(updated_event, INFINITE);
             for (int i = 0; i < height; ++i) {
                 coord.Y = i;
                 for (int j = 0; j < width; ++j) {
@@ -59,7 +61,7 @@ void Renderer::display() {
             }
             is_handle_1 = !is_handle_1;
             SetConsoleActiveScreenBuffer(handle);
-            Sleep(SCREEN_DELAY);
+//            Sleep(SCREEN_DELAY);
         }
 }
 
@@ -83,7 +85,9 @@ void Renderer::update() {
     if (foreground_spirit){
         drawSpirit(frame_buffer, foreground_spirit);
     }
+
     frame = frame_buffer;
+    SetEvent(updated_event);
     is_frame_1 = !is_frame_1;
 }
 
@@ -133,6 +137,35 @@ void Renderer::updateBackground(Spirit *background) {
 
 void Renderer::updateForeground(Spirit *foreground) {
     foreground_spirit = foreground;
+}
+
+DWORD WINAPI Renderer::renderer_update(LPVOID lpParameter){
+//    std::cout << "in" << std::endl;
+    Renderer *renderer = nullptr;
+    if(lpParameter){
+        renderer = (Renderer *)lpParameter;
+        while(TRUE){
+            renderer->update();
+            WaitForMultipleObjects(1, renderer->getUpdateEvent(), FALSE, INFINITE);
+        }
+    }
+    return 0;
+}
+DWORD WINAPI Renderer::renderer_display(LPVOID lpParameter){
+    Renderer *renderer = nullptr;
+    if(lpParameter){
+        renderer = (Renderer *)lpParameter;
+        renderer->display();
+    }
+    return 0;
+}
+VOID CALLBACK Renderer::TimeProc(PVOID lpParameter, BOOLEAN TimerOrWaitFired){
+    Renderer *renderer = nullptr;
+//    std::cout << "timer" << std::endl;
+    if(lpParameter){
+        renderer = (Renderer *)lpParameter;
+        renderer->timeBat();
+    }
 }
 
 
