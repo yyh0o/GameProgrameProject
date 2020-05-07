@@ -8,14 +8,19 @@
 #include "Renderer.h"
 #include "config.h"
 
+#define EXIT_FLAG 0
+#define START_FLAG 1
+
 class Controller {
 Renderer renderer = Renderer(0, 0);
+
 
 public:
     Controller(Renderer &r);
     void run();
     void test();
     void init();
+    int getControlFlag();
 };
 
 

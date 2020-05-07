@@ -85,6 +85,67 @@ void Spirit::setVisible(bool isVisible) {
     visible = isVisible;
 }
 
-bool Spirit::isVisible() {
+bool Spirit::isVisible() const {
     return visible;
 }
+
+bool Spirit::loadAnimation(const char *file_name, Animation *animation) {
+    int frame_num;
+    int height;
+    int width;
+    std::ifstream in(file_name, std::ios::in);
+    if (in.is_open()){
+        in >> frame_num;
+        in >> height;
+        in >> width;
+        for (int i = 0; i < frame_num; ++i) {
+            auto tmp_frame = new Frame(0);
+            for (int j = 0; j < height; ++j) {
+                Frame_1d tmp_frame_1d(0);
+                for (int k = 0; k < width; ++k) {
+                    char c;
+                    in >> c;
+                    tmp_frame_1d.push_back(c);
+                }
+                tmp_frame->push_back(tmp_frame_1d);
+            }
+            animation->push_back(tmp_frame);
+        }
+        in.close();
+        return true;
+    }
+    return false;
+}
+
+bool Spirit::writeAnimation(const char *file_name, const Animation& animation) {
+    if (animation.empty()){
+        return false;
+    }
+    else if (animation[0]->empty()){
+        return false;
+    }
+    else if (animation[0][0].empty()){
+        return false;
+    }
+    else {
+        int frame_num = animation.size();
+        int height = animation[0]->size();
+        int width = animation[0][0].size();
+        std::ofstream out(file_name, std::ios::out);
+        if (out.is_open()){
+            out << frame_num << " " << height << " " << width << std::endl;
+            for (int i = 0; i < frame_num; ++i) {
+                for (int j = 0; j < height; ++j) {
+                    for (int k = 0; k < width; ++k) {
+                        out << (*animation[i])[j][k];
+                    }
+                }
+            }
+            out.close();
+            return true;
+        }
+    }
+    return false;
+}
+
+Spirit::Spirit() = default;

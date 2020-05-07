@@ -54,6 +54,10 @@ void Controller::test() {
     renderer.addSpirit(&exit_title_background);
     renderer.addSpirit(&start_spirit);
     renderer.addSpirit(&exit_spirit);
+//    Animation testAnimation;
+//    bool test = Spirit::loadAnimation("../resource/test.txt", &testAnimation);
+//    Spirit testSpirit(0, 0, 10, 5, testAnimation);
+//    renderer.addSpirit(&testSpirit);
     HANDLE timer;
     HANDLE timerQueue;
     timerQueue = CreateTimerQueue();
@@ -90,4 +94,22 @@ void Controller::test() {
 
 Controller::Controller(Renderer &r) {
     renderer = r;
+}
+
+void Controller::run() {
+    int controlFlag;
+    init();
+    do{
+        controlFlag = getControlFlag();
+        switch (controlFlag) {
+            case START_FLAG:
+                break;
+            default:
+                break;
+        }
+    }while (controlFlag != EXIT_FLAG);
+}
+
+int Controller::getControlFlag() {
+    return 0;
 }
