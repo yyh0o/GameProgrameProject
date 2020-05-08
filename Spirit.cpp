@@ -7,8 +7,8 @@ Spirit::Spirit(int p_x, int p_y, std::vector<Frame*> &animation_frames){
     visible = true;
     position_x = p_x;
     position_y = p_y;
-    width = 1;
-    height = 1;
+    width = animation_frames[0][0][0].size();
+    height = animation_frames[0][0].size();
     animation_key_frames = animation_frames;
     current_frame = animation_key_frames.begin();
 }
@@ -75,8 +75,8 @@ Spirit::Spirit(bool isVisible, int p_x, int p_y, std::vector<Frame *> &animation
     visible = isVisible;
     position_x = p_x;
     position_y = p_y;
-    width = 1;
-    height = 1;
+    width = animation_frames[0][0][0].size();
+    height = animation_frames[0][0].size();
     animation_key_frames = animation_frames;
     current_frame = animation_key_frames.begin();
 }
@@ -105,6 +105,9 @@ bool Spirit::loadAnimation(const char *file_name, Animation *animation) {
                 for (int k = 0; k < width; ++k) {
                     char c;
                     in >> c;
+                    if (c == '0'){
+                        c = NOT_SHOW;
+                    }
                     tmp_frame_1d.push_back(c);
                 }
                 tmp_frame->push_back(tmp_frame_1d);

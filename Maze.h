@@ -11,15 +11,15 @@
 #include "Guard.h"
 
 class Maze {
-    Player player;
-    std::vector<Guard> guards;
-    GameMap map;
-    int number{};
-    int height{};
-    int width{};
-    int guard_amount{};
-    void setPlayer();
-    void setGuards();
+    Player player;  // 玩家
+    std::vector<Guard> guards;  // 守卫
+    GameMap map;    // 地图
+    int number{};   // 迷宫编号
+    int height{};   // 高度
+    int width{};    // 宽度
+    int guard_amount{}; // 守卫数量
+    void setPlayer();   // 放置一个玩家
+    void setGuards();   // 放置守卫
 public:
     Maze();
     Maze(int n, int h, int w, int guard_amount){

@@ -35,7 +35,7 @@ public:
     Spirit(int p_x, int p_y, int width, int height, std::vector<Frame*> &animation_frames);
 
     /***
-     * 构造一个大小为 1*1 默认可见 的spirit
+     * 构造一个大小为 默认可见 的spirit
      * @param p_x x坐标
      * @param p_y y坐标
      * @param animation_frames 动画帧
@@ -54,7 +54,7 @@ public:
     Spirit(bool isVisible, int px, int py, int w, int h, std::vector<Frame*> &animation_frames);
 
     /***
-     * 构造一个大小为 1*1 的Spirit
+     * 构造一个 Spirit
      * @param isVisible 是否可见
      * @param p_x x坐标
      * @param p_y y坐标

@@ -6,6 +6,20 @@
 #include "Controller.h"
 
 void Controller::init() {
+    HANDLE timer;
+    HANDLE timerQueue;
+    timerQueue = CreateTimerQueue();
+    CreateTimerQueueTimer(
+            &timer,
+            timerQueue,
+            (WAITORTIMERCALLBACK)Renderer::TimeProc,
+            &renderer,
+            0,
+            ANIMATION_DELAY,
+            0
+    );
+    CreateThread(NULL, 0, Renderer::renderer_update, &renderer, 0, NULL);
+    CreateThread(NULL, 0, Renderer::renderer_display, &renderer, 0, NULL);
 }
 
 void Controller::test() {
@@ -50,14 +64,14 @@ void Controller::test() {
     Animation exit_animation(1, Spirit::generateFrame(exit_title, 5, 27));
     Spirit start_spirit(4,4,27,5,start_animation);
     Spirit exit_spirit(4,12,27,5,exit_animation);
-    renderer.addSpirit(&start_title_background);
-    renderer.addSpirit(&exit_title_background);
-    renderer.addSpirit(&start_spirit);
-    renderer.addSpirit(&exit_spirit);
-//    Animation testAnimation;
-//    bool test = Spirit::loadAnimation("../resource/test.txt", &testAnimation);
-//    Spirit testSpirit(0, 0, 10, 5, testAnimation);
-//    renderer.addSpirit(&testSpirit);
+//    renderer.addSpirit(&start_title_background);
+//    renderer.addSpirit(&exit_title_background);
+//    renderer.addSpirit(&start_spirit);
+//    renderer.addSpirit(&exit_spirit);
+    Animation testAnimation;
+    bool test = Spirit::loadAnimation("../resource/ready.txt", &testAnimation);
+    Spirit testSpirit(0, 0, 36, 1, testAnimation);
+    renderer.addSpirit(&testSpirit);
     HANDLE timer;
     HANDLE timerQueue;
     timerQueue = CreateTimerQueue();
@@ -97,12 +111,23 @@ Controller::Controller(Renderer &r) {
 }
 
 void Controller::run() {
-    int controlFlag;
     init();
+    Animation readyAnimation;
+    Animation loadingAnimation;
+    Spirit::loadAnimation("../resource/ready.txt", &readyAnimation);
+    Spirit::loadAnimation("../resource/loading.txt", &loadingAnimation);
+    Spirit readySpirit(40, 15,readyAnimation);
+    Spirit loadingSpirit(false,40, 15, loadingAnimation);
+    renderer.addSpirit(&readySpirit);
+    renderer.addSpirit(&loadingSpirit);
+    int controlFlag;
     do{
         controlFlag = getControlFlag();
         switch (controlFlag) {
-            case START_FLAG:
+            case ENTER:
+                readySpirit.setVisible(false);
+                loadingSpirit.setVisible(true);
+
                 break;
             default:
                 break;
@@ -111,5 +136,9 @@ void Controller::run() {
 }
 
 int Controller::getControlFlag() {
+    if (_kbhit()){
+        int c = _getch();
+        return c;
+    }
     return 0;
 }

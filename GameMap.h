@@ -5,6 +5,8 @@
 #ifndef MINI_GAME_GAMEMAP_H
 #define MINI_GAME_GAMEMAP_H
 
+#include <fstream>
+
 #define WALL '#'
 #define AIR ' '
 
@@ -17,8 +19,10 @@ public:
     GameMap(char* array, int w, int height);
     bool checkInRange(int x, int y) const;
     bool checkAvailable(int x, int y);
-    char* get_content();
+    const char* get_content();
     void get_size(int *width, int *height) const;
+    bool static loadMap(const char* file_name, GameMap *map);
+    bool static writeMap(const char* file_name, GameMap &map);
 };
 
 

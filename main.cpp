@@ -7,9 +7,9 @@
 #include "config.h"
 
 int main() {
-    Renderer renderer(50, 50);
+    Renderer renderer(100, 50);
     Controller controller(renderer);
-    controller.test();
-
+//    controller.test();
+    controller.run();
 //    return 0;
 }

@@ -10,9 +10,9 @@
 class Guard:Life {
 int status;
 public:
-    void patrol();
-    void chaseEnemy();
-    void changeStatus();
+    void patrol();          // 巡视敌人
+    void chaseEnemy();      // 追击敌人
+    void changeStatus();    // 改变状态
 };
 
 
