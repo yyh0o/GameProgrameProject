@@ -8,20 +8,20 @@
 #include "Renderer.h"
 #include "config.h"
 
-#define EXIT_FLAG 27
+
+#define ESC 27
 #define START_FLAG 1
 #define ENTER 13
 
 class Controller {
 Renderer renderer = Renderer(0, 0);
 
-
 public:
     Controller(Renderer &r);
     void run();
     void test();
     void init();
-    int getControlFlag();
+    static int getControlFlag();
 };
 
 

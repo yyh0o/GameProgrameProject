@@ -42,6 +42,8 @@ public:
     void updateBackground(Spirit *background);
     void updateForeground(Spirit *foreground);
 
+    void changeScene(std::vector<Spirit *> &scene);
+
     static DWORD WINAPI renderer_update(LPVOID lpParameter);
     static DWORD WINAPI renderer_display(LPVOID lpParameter);
     static VOID CALLBACK TimeProc(PVOID lpParameter, BOOLEAN TimerOrWaitFired);

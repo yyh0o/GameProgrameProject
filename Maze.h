@@ -31,6 +31,8 @@ public:
         setPlayer();
     }
 
+    static Maze getTestMaze();
+
 };
 
 

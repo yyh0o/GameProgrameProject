@@ -23,6 +23,7 @@ public:
     void get_size(int *width, int *height) const;
     bool static loadMap(const char* file_name, GameMap *map);
     bool static writeMap(const char* file_name, GameMap &map);
+    GameMap static getTestMap();
 };
 
 

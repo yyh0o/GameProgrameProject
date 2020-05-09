@@ -121,18 +121,22 @@ void Controller::run() {
     renderer.addSpirit(&readySpirit);
     renderer.addSpirit(&loadingSpirit);
     int controlFlag;
-    do{
-        controlFlag = getControlFlag();
+    controlFlag = getControlFlag();
+    if (controlFlag == ENTER){
+        readySpirit.setVisible(false);
+        loadingSpirit.setVisible(true);
+    }
+    while (controlFlag != ESC){
         switch (controlFlag) {
-            case ENTER:
-                readySpirit.setVisible(false);
-                loadingSpirit.setVisible(true);
+            case START_FLAG:
 
                 break;
             default:
                 break;
         }
-    }while (controlFlag != EXIT_FLAG);
+        controlFlag = getControlFlag();
+    }
+
 }
 
 int Controller::getControlFlag() {

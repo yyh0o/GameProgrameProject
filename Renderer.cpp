@@ -168,5 +168,9 @@ VOID CALLBACK Renderer::TimeProc(PVOID lpParameter, BOOLEAN TimerOrWaitFired){
     }
 }
 
+void Renderer::changeScene(std::vector<Spirit *> &scene) {
+    spirit_list = scene;
+}
+
 
 
