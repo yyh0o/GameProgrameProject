@@ -37,8 +37,6 @@ Renderer::Renderer(int w, int h) {
     SetConsoleCursorInfo(console_handle_2, &cci);
     is_handle_1 = true;
     update_event = CreateEvent(NULL, FALSE, FALSE, NULL);
-    background_spirit = NULL;
-    foreground_spirit = NULL;
     frame = &frame_buffer_1;
 }
 
@@ -74,15 +72,15 @@ void Renderer::update() {
         frame_buffer = &frame_buffer_1;
     }
     flash(frame_buffer);
-    if (background_spirit){
+    if (background_spirit.isVisible()){
         drawSpirit(frame_buffer, background_spirit);
     }
-    for (auto item : spirit_list){
+    for (auto &item : spirit_list){
         if(item->isVisible()){
-            drawSpirit(frame_buffer, item);
+            drawSpirit(frame_buffer, *item);
         }
     }
-    if (foreground_spirit){
+    if (foreground_spirit.isVisible()){
         drawSpirit(frame_buffer, foreground_spirit);
     }
 
@@ -104,11 +102,11 @@ void Renderer::drawFrame(Frame *source_frame, Frame *des_frame, int x, int y, in
     }
 }
 
-void Renderer::drawSpirit(Frame *des_frame, Spirit *spirit) {
-    Frame *source;
-    source = spirit->getCurrentFrame();
-    spirit->updateFrame();
-    drawFrame(source, des_frame, spirit->getX(), spirit->getY(), spirit->getWidth(), spirit->getHeight());
+void Renderer::drawSpirit(Frame *des_frame, Spirit &spirit) {
+    Frame source;
+    source = spirit.getCurrentFrame();
+    spirit.updateFrame();
+    drawFrame(&source, des_frame, spirit.getX(), spirit.getY(), spirit.getWidth(), spirit.getHeight());
 }
 
 void Renderer::flash(Frame *buffer) const {
@@ -119,8 +117,8 @@ void Renderer::flash(Frame *buffer) const {
     }
 }
 
-void Renderer::addSpirit(Spirit *spirit) {
-    spirit_list.push_back(spirit);
+void Renderer::addSpirit(Spirit &spirit) {
+    spirit_list.push_back(&spirit);
 }
 
 void Renderer::timeBat() {
@@ -131,11 +129,11 @@ PHANDLE Renderer::getUpdateEvent() {
     return &update_event;
 }
 
-void Renderer::updateBackground(Spirit *background) {
+void Renderer::updateBackground(Spirit &background) {
     background_spirit = background;
 }
 
-void Renderer::updateForeground(Spirit *foreground) {
+void Renderer::updateForeground(Spirit &foreground) {
     foreground_spirit = foreground;
 }
 

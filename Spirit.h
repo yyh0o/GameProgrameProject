@@ -11,7 +11,7 @@
 
 typedef std::vector<char> Frame_1d;
 typedef std::vector<Frame_1d> Frame;
-typedef std::vector<Frame *> Animation;
+typedef std::vector<Frame> Animation;
 
 class Spirit {
     bool visible{};                       // 是否可见
@@ -20,7 +20,8 @@ class Spirit {
     int width{};                          // 图形的宽
     int height{};                         // 图形的高
     Animation animation_key_frames;     // 动画关键帧
-    Animation::iterator current_frame;  // 当前应该显示的帧
+    int current_frame{};  // 当前应该显示的帧
+    int animation_size{};
 public:
     Spirit();
 
@@ -32,7 +33,7 @@ public:
      * @param height 高度
      * @param animation_frames 动画帧
      */
-    Spirit(int p_x, int p_y, int width, int height, std::vector<Frame*> &animation_frames);
+    Spirit(int p_x, int p_y, int width, int height, Animation &animation_frames);
 
     /***
      * 构造一个大小为 默认可见 的spirit
@@ -40,7 +41,7 @@ public:
      * @param p_y y坐标
      * @param animation_frames 动画帧
      */
-    Spirit(int p_x, int p_y, std::vector<Frame*> &animation_frames);
+    Spirit(int p_x, int p_y, Animation &animation_frames);
 
     /***
      * 构造一个Spirit
@@ -51,7 +52,7 @@ public:
      * @param h 高
      * @param animation_frames 动画帧
      */
-    Spirit(bool isVisible, int px, int py, int w, int h, std::vector<Frame*> &animation_frames);
+    Spirit(bool isVisible, int px, int py, int w, int h, Animation &animation_frames);
 
     /***
      * 构造一个 Spirit
@@ -60,7 +61,7 @@ public:
      * @param p_y y坐标
      * @param animation_frames 动画帧
      */
-    Spirit(bool isVisible, int p_x, int p_y, std::vector<Frame*> &animation_frames);
+    Spirit(bool isVisible, int p_x, int p_y, Animation &animation_frames);
 
     /***
      * 设置当前Spirit是否可见
@@ -96,7 +97,7 @@ public:
      * 获取当前应该显示的帧
      * @return
      */
-    Frame* getCurrentFrame();
+    Frame getCurrentFrame();
 
     /**
      * 更新动画帧
@@ -109,7 +110,7 @@ public:
      * @param c
      * @return 生成地Frame
      */
-    static Frame* generateFrame(char c);
+    static Frame generateFrame(char c);
 
     /**
      * 生成一个帧
@@ -118,9 +119,11 @@ public:
      * @param width 宽度
      * @return 生成的Frame
      */
-    static Frame* generateFrame(const char *c, int height, int width);
+    static Frame generateFrame(const char *c, int height, int width);
 
     static bool loadAnimation(const char *file_name, Animation *animation);
+
+    static Animation loadAnimation(const char *file_name);
 
     static bool writeAnimation(const char *file_name, const Animation& animation);
 };

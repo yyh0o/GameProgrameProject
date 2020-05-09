@@ -24,9 +24,9 @@ class Renderer {
     bool is_handle_1;
     COORD coord = {0, 0};
     DWORD bytes = 0;
-    Spirit* background_spirit{};
-    Spirit* foreground_spirit{};
-    std::vector<Spirit*> spirit_list;
+    Spirit background_spirit{};
+    Spirit foreground_spirit{};
+    std::vector<Spirit *> spirit_list;
     HANDLE update_event;
 public:
     Frame* frame;
@@ -37,10 +37,10 @@ public:
     Renderer(int width, int height);
     void flash(Frame* buffer) const;
     static void drawFrame(Frame *source_frame, Frame *des_frame, int x, int y, int w, int h);
-    static void drawSpirit(Frame* des_frame, Spirit* spirit);
-    void addSpirit(Spirit *spirit);
-    void updateBackground(Spirit *background);
-    void updateForeground(Spirit *foreground);
+    static void drawSpirit(Frame* des_frame, Spirit &spirit);
+    void addSpirit(Spirit &spirit);
+    void updateBackground(Spirit &background);
+    void updateForeground(Spirit &foreground);
 
     void changeScene(std::vector<Spirit *> &scene);
 

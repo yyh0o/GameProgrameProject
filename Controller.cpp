@@ -73,8 +73,8 @@ void Controller::test() {
     Spirit testSpirit(0, 0, 36, 1, testAnimation);
     Player p(0,0);
     Spirit playerSpirit = p.getSpirit();
-    renderer.addSpirit(&playerSpirit);
-    renderer.addSpirit(&testSpirit);
+    renderer.addSpirit(playerSpirit);
+//    renderer.addSpirit(testSpirit);
     HANDLE timer;
     HANDLE timerQueue;
     timerQueue = CreateTimerQueue();
@@ -131,14 +131,16 @@ void Controller::run() {
     );
     CreateThread(NULL, 0, Renderer::renderer_update, &renderer, 0, NULL);
     CreateThread(NULL, 0, Renderer::renderer_display, &renderer, 0, NULL);
-    Animation readyAnimation;
-    Animation loadingAnimation;
-    Animation chooseDifficulty;
-    Animation selectBar;
-    Spirit::loadAnimation("../resource/ready.txt", &readyAnimation);
-    Spirit::loadAnimation("../resource/loading.txt", &loadingAnimation);
-    Spirit::loadAnimation("../resource/choose_difficulty.txt", &chooseDifficulty);
-    Spirit::loadAnimation("../resource/select_bar.txt", &selectBar);
+    Animation readyAnimation = Spirit::loadAnimation("../resource/ready.txt");;
+    Animation loadingAnimation = Spirit::loadAnimation("../resource/loading.txt");
+    Animation chooseDifficulty = Spirit::loadAnimation("../resource/choose_difficulty.txt");
+    Animation selectBar = Spirit::loadAnimation("../resource/select_bar.txt");
+//    Spirit::loadAnimation("../resource/ready.txt", &readyAnimation);
+//    Spirit::loadAnimation("../resource/loading.txt", &loadingAnimation);
+//    Spirit::loadAnimation("../resource/choose_difficulty.txt", &chooseDifficulty);
+//    Spirit::loadAnimation("../resource/select_bar.txt", &selectBar);
+
+
     Spirit selectBarSpirit(40, 15, selectBar);
     Spirit chooseDifficultySpirit(53, 15, chooseDifficulty);
     Spirit readySpirit(40, 15,readyAnimation);
