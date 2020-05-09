@@ -6,18 +6,33 @@
 #define MINI_GAME_CONTROLLER_H
 
 #include "Renderer.h"
+#include "Maze.h"
 #include "config.h"
 
 
 #define ESC 27
 #define START_FLAG 1
 #define ENTER 13
+#define KV_UP 72
+#define KV_RIGHT 77
+#define KV_DOWN 80
+#define KV_LEFT 75
+
+#define READY 1
+#define START 2
+
+#define EASY 0
+#define NORMAL 1
+#define HARD 2
 
 class Controller {
-Renderer renderer = Renderer(0, 0);
-
+    Maze maze;
+    Renderer renderer = Renderer(0, 0);
+    int status;
+    int difficulty;
+    void chooseDifficulty();
 public:
-    Controller(Renderer &r);
+    explicit Controller(Renderer &r);
     void run();
     void test();
     void init();

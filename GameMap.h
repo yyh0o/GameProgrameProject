@@ -9,6 +9,10 @@
 
 #define WALL '#'
 #define AIR ' '
+#define PLAYER '0'
+#define GUARD '1'
+#define START_POINT '2'
+#define END_POINT '3'
 
 class GameMap {
     char* map_array{};

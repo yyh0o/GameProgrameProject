@@ -15,5 +15,14 @@ Maze Maze::getTestMaze() {
     maze.guard_amount = 1;
     maze.guards.emplace_back();
 
-    return Maze();
+    return maze;
+}
+
+void Maze::setLife() {
+    const char *map_content = map.get_content();
+    for (int i = 0; i < height; ++i) {
+        for (int j = 0; j < width; ++j) {
+
+        }
+    }
 }

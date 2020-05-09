@@ -9,19 +9,20 @@
 #include "GameMap.h"
 
 class Life {
+protected:
+    Spirit cur_spirit;
     int position_x{};
     int position_y{};
     int health{};
     bool isAlive{};
-    Spirit cur_spirit;
-    GameMap map;
 public:
-    Life(int x, int y, const Spirit& spirit,const GameMap &map);
-
+    Life(int x, int y, const Spirit& spirit);
     Life();
 
     void move(int x, int y);
-    bool safeMove(int x, int y);
+    bool safeMove(int x, int y, GameMap &map);
+
+    Spirit getSpirit();
 };
 
 

@@ -7,7 +7,7 @@
 
 #include "Life.h"
 
-class Guard:Life {
+class Guard: public Life {
 int status;
 public:
     void patrol();          // 巡视敌人

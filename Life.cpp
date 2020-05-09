@@ -9,7 +9,7 @@ void Life::move(int x, int y) {
     position_y += y;
 }
 
-bool Life::safeMove(int x, int y) {
+bool Life::safeMove(int x, int y, GameMap &map) {
     if (map.checkAvailable(x, y)){
         move(x, y);
         return true;
@@ -19,11 +19,14 @@ bool Life::safeMove(int x, int y) {
     }
 }
 
-Life::Life(int x, int y, const Spirit& spirit, const GameMap& map) {
+Life::Life(int x, int y, const Spirit& spirit) {
     position_x = x;
     position_y = y;
-    this->map = map;
     cur_spirit = spirit;
+}
+
+Spirit Life::getSpirit() {
+    return cur_spirit;
 }
 
 Life::Life() = default;

@@ -7,9 +7,14 @@
 
 #include "Life.h"
 
-class Player:Life {
+#define MAX_HEALTH 100
+
+class Player: public Life {
 
 public:
+    Player();
+    Player(int x, int y, const Spirit& spirit);
+    Player(int x, int y);
     void attack();
 };
 
