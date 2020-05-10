@@ -131,14 +131,11 @@ void Controller::run() {
     );
     CreateThread(NULL, 0, Renderer::renderer_update, &renderer, 0, NULL);
     CreateThread(NULL, 0, Renderer::renderer_display, &renderer, 0, NULL);
+
     Animation readyAnimation = Spirit::loadAnimation("../resource/ready.txt");;
     Animation loadingAnimation = Spirit::loadAnimation("../resource/loading.txt");
     Animation chooseDifficulty = Spirit::loadAnimation("../resource/choose_difficulty.txt");
     Animation selectBar = Spirit::loadAnimation("../resource/select_bar.txt");
-//    Spirit::loadAnimation("../resource/ready.txt", &readyAnimation);
-//    Spirit::loadAnimation("../resource/loading.txt", &loadingAnimation);
-//    Spirit::loadAnimation("../resource/choose_difficulty.txt", &chooseDifficulty);
-//    Spirit::loadAnimation("../resource/select_bar.txt", &selectBar);
 
 
     Spirit selectBarSpirit(40, 15, selectBar);
