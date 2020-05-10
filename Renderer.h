@@ -38,6 +38,7 @@ public:
     void flash(Frame* buffer) const;
     static void drawFrame(Frame *source_frame, Frame *des_frame, int x, int y, int w, int h);
     static void drawSpirit(Frame* des_frame, Spirit &spirit);
+    std::vector<Spirit *> *getScene();
     void addSpirit(Spirit &spirit);
     void updateBackground(Spirit &background);
     void updateForeground(Spirit &foreground);

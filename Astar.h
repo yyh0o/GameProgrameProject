@@ -29,18 +29,21 @@ typedef struct p_node{
 class Astar {
     int width = 30;
     int height = 20;
-    int start_x;
-    int start_y;
-    int end_x;
-    int end_y;
+    int start_x{};
+    int start_y{};
+    int end_x{};
+    int end_y{};
     int count = 0;
-    node *map;
+    node *map{};
 
     std::list<node*> openlist;
 
     static double get_distance(node* o_node, node* d_node);
 public:
     Astar(const char* origin_map,int w, int h, COORD start, COORD end);
+
+    Astar();
+
     std::list<const node*> get_path(node* start, node* end);
 
     std::list<const node*> get_path();
@@ -48,6 +51,8 @@ public:
     std::list<const node*> get_path(COORD start, COORD end);
 
     void display();
+
+    COORD getNextStep(COORD start, COORD end);
 };
 
 

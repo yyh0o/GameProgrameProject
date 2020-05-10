@@ -11,6 +11,7 @@ Astar::Astar(const char *origin_map,int w, int h, COORD start, COORD end) {
     end_y = end.Y;
     height = h;
     width = w;
+
     map = new node[h*w];
     for (int i = 0; i < height; ++i) {
         for (int j = 0; j < width; ++j) {
@@ -32,8 +33,12 @@ double Astar::get_distance(node *o_node, node *d_node) {
 }
 
 std::list<const node*> Astar::get_path(node *start, node *end) {
+    end_x = end->x;
+    end_y = end->y;
+    openlist.clear();
     for (int i = 0; i < width * height; ++i) {
         map[i].isMarked = false;
+        map[i].last = NULL;
     }
     std::list<const node*> result(0);
     openlist.push_back(start);
@@ -107,5 +112,19 @@ void Astar::display() {
         std::cout << std::endl;
     }
 }
+
+COORD Astar::getNextStep(COORD start, COORD end) {
+    if (start.X == end.X && start.Y == end.Y){
+        return start;
+    }
+    std::list<const node*> tmp = get_path(start, end);
+    tmp.pop_front();
+    COORD result;
+    result.X = tmp.front()->x;
+    result.Y = tmp.front()->y;
+    return result;
+}
+
+Astar::Astar()= default;;
 
 

@@ -190,3 +190,8 @@ Animation Spirit::loadAnimation(const char *file_name) {
 Spirit::Spirit() {
     visible = false;
 }
+
+void Spirit::setPos(int x, int y) {
+    position_x = x;
+    position_y = y;
+}

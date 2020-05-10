@@ -80,6 +80,9 @@ public:
     int getWidth() const{return width;};
     int getHeight() const{return height;};
 
+    void setPos(int x, int y);
+
+
     /**
      * 移动Spirit
      * @param x 在x轴移动的距离

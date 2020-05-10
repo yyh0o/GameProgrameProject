@@ -6,31 +6,61 @@
 #define MINI_GAME_MAZE_H
 
 #include <vector>
+#include <ctime>
+#include <queue>
+#include <iostream>
 #include "GameMap.h"
 #include "Player.h"
 #include "Guard.h"
+#include "Renderer.h"
+
+#define AVAILABLE 1
+#define UNAVAILABLE 0
+
+#define GAP 5
+
+struct Node{
+    int x,y;
+    Node(){x=0;y=0;}
+    Node(int x,int y):x(x),y(y){}
+};
 
 class Maze {
+    int start_x = -1;
+    int start_y = -1;
+    int end_x = -1;
+    int end_y = -1;
     Player player;  // 玩家
     std::vector<Guard> guards{};  // 守卫
     GameMap map;    // 地图
     int number{};   // 迷宫编号
-    int height{};   // 高度
-    int width{};    // 宽度
+    int size{};     // 迷宫尺寸
     int guard_amount{}; // 守卫数量
     void setLife();   // 放置玩家和守卫
+    int *maze_array{};
+    std::vector<Node>maze;//用于随机取点
+    Renderer *renderer;
+
+    Node Move[4]={Node(-1,0),Node(0,1),Node(1,0),Node(0,-1)};//上下左右移动
+    static int randInt(int t);
+    Node RandNode();
+    int FindWay(Node a);
+
+    void Erase(Node t);
+
+    void Generate();
+    void init();
+    Spirit getBackground();
+
+
 public:
     Maze();
-    Maze(int n, int h, int w, int guard_amount){
-        this->guard_amount = guard_amount;
-        number = n;
-        height = h;
-        width = w;
-        setLife();
-    }
+    Maze(int n, int size, int guard_amount, Renderer *r);
+    void show();
 
     static Maze getTestMaze();
-
+    void run();
+    void update();
 };
 
 

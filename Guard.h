@@ -6,12 +6,17 @@
 #define MINI_GAME_GUARD_H
 
 #include "Life.h"
+#include "Astar.h"
+#include <windows.h>
 
 class Guard: public Life {
-int status;
+    int status{};
+    Astar astar;
+
 public:
+    Guard(int x, int y, const char *map, int w, int h);
     void patrol();          // 巡视敌人
-    void chaseEnemy();      // 追击敌人
+    void chaseEnemy(int des_x, int des_y);      // 追击敌人
     void changeStatus();    // 改变状态
 };
 

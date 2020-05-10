@@ -18,11 +18,11 @@ protected:
 public:
     Life(int x, int y, const Spirit& spirit);
     Life();
-
+    Life(int x, int y, Animation animation);
     void move(int x, int y);
     bool safeMove(int x, int y, GameMap &map);
 
-    Spirit getSpirit();
+    Spirit *getSpirit();
 };
 
 

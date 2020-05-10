@@ -16,6 +16,9 @@ public:
     Player(int x, int y, const Spirit& spirit);
     Player(int x, int y);
     void attack();
+    Player(int x, int y, Animation animation);
+    void move(int x, int y);
+    void getPos(int *x, int *y);
 };
 
 

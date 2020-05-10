@@ -11,7 +11,7 @@
 int main() {
     Renderer renderer(100, 50);
     Controller controller(renderer);
-    controller.test();
+//    controller.test();
     controller.run();
     return 0;
 
@@ -27,9 +27,9 @@ int main() {
 //             '3','3','3','0','0','3','0','3','0','3' ,
 //             '3','0','0','0','2','3','3','3','0','3'
 //    };
-//    Astar t(array, 10, 10, {0,0}, {4, 9});
-//    t.display();
-//    auto l = t.get_path();
+//    Astar t(array, 10, 10, {0,0}, {0, 0});
+//    Guard g(0, 0, array, 10, 10);
+//    auto l = t.get_path({0,0}, {4,9});
 //    for (auto i : l){
 //        std::cout << "(" << i->x << ", " << i->y << ")" << std::endl;
 //    }

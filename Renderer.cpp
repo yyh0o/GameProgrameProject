@@ -170,5 +170,9 @@ void Renderer::changeScene(std::vector<Spirit *> &scene) {
     spirit_list = scene;
 }
 
+std::vector<Spirit *> *Renderer::getScene() {
+    return &spirit_list;
+}
+
 
 
