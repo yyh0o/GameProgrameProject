@@ -169,7 +169,7 @@ void Controller::run() {
     resultScene.push_back(&readySpirit);
     int controlFlag;
     do {
-        controlFlag = getchar();
+        controlFlag = getControlFlag();
         switch (status) {
             case READY:
                 renderer.changeScene(readyScene);
