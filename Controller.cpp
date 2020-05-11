@@ -139,22 +139,37 @@ void Controller::run() {
     Animation chooseDifficulty = Spirit::loadAnimation("../resource/choose_difficulty.txt");
     Animation selectBar = Spirit::loadAnimation("../resource/select_bar.txt");
 
+    Animation resultBackgroundAnimation = Spirit::loadAnimation("../resource/ResultBackground.txt");
+    Animation lossAnimation = Spirit::loadAnimation("../resource/Loss.txt");
+    Animation winAnimation = Spirit::loadAnimation("../resource/Win.txt");
+
 
     Spirit selectBarSpirit(40, 15, selectBar);
     Spirit chooseDifficultySpirit(53, 15, chooseDifficulty);
     Spirit readySpirit(40, 15,readyAnimation);
     Spirit loadingSpirit(40, 15, loadingAnimation);
+
+    Spirit winSpirit(false, 40, 10, winAnimation);
+    Spirit lossSpirit(false, 40, 10, lossAnimation);
+    Spirit resultBackgroundSpirit(0, 0, resultBackgroundAnimation);
+
     std::vector<Spirit *> readyScene(0);
     std::vector<Spirit *> loadingScene(0);
     std::vector<Spirit *> difficultSelectScene(0);
     std::vector<Spirit *> gameScene(0);
+    std::vector<Spirit *> resultScene(0);
+
     difficultSelectScene.push_back(&selectBarSpirit);
     difficultSelectScene.push_back(&chooseDifficultySpirit);
     readyScene.push_back(&readySpirit);
     loadingScene.push_back(&loadingSpirit);
+    resultScene.push_back(&resultBackgroundSpirit);
+    resultScene.push_back(&winSpirit);
+    resultScene.push_back(&lossSpirit);
+    resultScene.push_back(&readySpirit);
     int controlFlag;
     do {
-        controlFlag = getControlFlag();
+        controlFlag = getchar();
         switch (status) {
             case READY:
                 renderer.changeScene(readyScene);
@@ -205,14 +220,18 @@ void Controller::run() {
                 status = maze.getStatus();
                 break;
             case WIN:
-                renderer.changeScene(readyScene);
+                winSpirit.setVisible(true);
+                lossSpirit.setVisible(false);
+                renderer.changeScene(resultScene);
                 controlFlag = getControlFlag();
                 if (controlFlag == ENTER){
                     status = READY;
                 }
                 break;
             case LOSS:
-                renderer.changeScene(loadingScene);
+                winSpirit.setVisible(false);
+                lossSpirit.setVisible(true);
+                renderer.changeScene(resultScene);
                 if (controlFlag == ENTER){
                     status = READY;
                 }

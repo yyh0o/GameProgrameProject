@@ -20,7 +20,7 @@
 #define WIN 5
 #define LOSS 6
 
-#define GAP 5
+#define GAP 10
 
 struct Node{
     int x,y;

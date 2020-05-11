@@ -47,6 +47,7 @@ Maze::Maze(int n, int size, int guard_amount, Renderer *r) {
     }
     map = GameMap(content, size, size);
     int l = 0;
+    int guard_num = guard_amount;
     for (int i = 0; i < size * size; ++i) {
         if (maze_array[i] == AVAILABLE){
             if (end_x == -1){
@@ -54,13 +55,13 @@ Maze::Maze(int n, int size, int guard_amount, Renderer *r) {
                 end_y = i / size;
             }
             l++;
-            if (l == 2 * GAP){
-                Guard guard(i % size, i / size, map.get_content(), size, size);
-                guards.push_back(guard);
-            }
-            if (l == 4 * GAP){
-                Guard guard(i % size, i / size, map.get_content(), size, size);
-                guards.push_back(guard);
+            if (l == GAP * guard_amount){
+                if (guard_num > 0){
+                    Guard guard(i % size, i / size, map.get_content(), size, size);
+                    guards.push_back(guard);
+                    guard_num--;
+                }
+                l = 0;
             }
             start_x = i % size;
             start_y = i / size;
