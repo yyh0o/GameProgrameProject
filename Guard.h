@@ -18,6 +18,7 @@ public:
     void patrol();          // 巡视敌人
     void chaseEnemy(int des_x, int des_y);      // 追击敌人
     void changeStatus();    // 改变状态
+    void getPos(int *x, int *y);
 };
 
 

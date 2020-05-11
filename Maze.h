@@ -17,6 +17,9 @@
 #define AVAILABLE 1
 #define UNAVAILABLE 0
 
+#define WIN 5
+#define LOSS 6
+
 #define GAP 5
 
 struct Node{
@@ -26,6 +29,7 @@ struct Node{
 };
 
 class Maze {
+    int status = 0;
     int start_x = -1;
     int start_y = -1;
     int end_x = -1;
@@ -61,6 +65,8 @@ public:
     static Maze getTestMaze();
     void run();
     void update();
+    bool checkStop();
+    int getStatus() const;
 };
 
 

@@ -14,8 +14,8 @@ protected:
     int position_x{};
     int position_y{};
     int health{};
-    bool isAlive{};
 public:
+    bool isAlive{};
     Life(int x, int y, const Spirit& spirit);
     Life();
     Life(int x, int y, Animation animation);

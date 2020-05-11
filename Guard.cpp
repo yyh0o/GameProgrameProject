@@ -24,3 +24,8 @@ void Guard::chaseEnemy(int des_x, int des_y) {
     position_y = nextStep.Y;
     cur_spirit.setPos(position_x, position_y);
 }
+
+void Guard::getPos(int *x, int *y) {
+    *x = position_x;
+    *y = position_y;
+}

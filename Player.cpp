@@ -38,4 +38,5 @@ void Player::getPos(int *x, int *y) {
     *y = position_y;
 }
 
+
 Player::Player() = default;

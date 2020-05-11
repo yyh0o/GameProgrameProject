@@ -118,6 +118,9 @@ COORD Astar::getNextStep(COORD start, COORD end) {
         return start;
     }
     std::list<const node*> tmp = get_path(start, end);
+//    for (auto i : tmp){
+//        std::cout << "(" << i->x << ", " << i->y << ")" << std::endl;
+//    }
     tmp.pop_front();
     COORD result;
     result.X = tmp.front()->x;

@@ -20,6 +20,8 @@
 
 #define READY 1
 #define START 2
+#define SELECT 3
+#define EXIT 4
 
 #define EASY 0
 #define NORMAL 1

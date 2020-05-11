@@ -107,8 +107,8 @@ void Controller::test() {
 //            }
 //        }
 //    }
-    Maze m(1, 21, 2, &renderer);
-    m.update();
+//    Maze m(1, 21, 2, &renderer);
+//    m.update();
 }
 
 Controller::Controller(Renderer &r) {
@@ -160,9 +160,14 @@ void Controller::run() {
                 renderer.changeScene(readyScene);
                 while (controlFlag != ENTER){
                     controlFlag = getControlFlag();
-                    if (controlFlag == ESC)
+                    if (controlFlag == ESC){
+                        status = EXIT;
                         break;
+                    }
                 }
+                status = SELECT;
+                break;
+            case SELECT:
                 renderer.changeScene(difficultSelectScene);
                 int tmpFlag;
                 do {
@@ -184,17 +189,36 @@ void Controller::run() {
                             status = START;
                             tmpFlag = ESC;
                             break;
+                        case ESC:
+                            status = READY;
+                            break;
                     }
                 }while(tmpFlag != ESC);
                 break;
+            case EXIT:
+                controlFlag = ESC;
             case START:
                 renderer.changeScene(loadingScene);
                 // todo load game
                 maze = Maze(difficulty, ((difficulty+1)*10+1), difficulty+1, &renderer);
                 maze.run();
-                status = READY;
+                status = maze.getStatus();
+                break;
+            case WIN:
+                renderer.changeScene(readyScene);
+                controlFlag = getControlFlag();
+                if (controlFlag == ENTER){
+                    status = READY;
+                }
+                break;
+            case LOSS:
+                renderer.changeScene(loadingScene);
+                if (controlFlag == ENTER){
+                    status = READY;
+                }
                 break;
             default:
+                status = READY;
                 break;
         }
     }while(controlFlag != ESC);

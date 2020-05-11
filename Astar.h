@@ -14,7 +14,7 @@
 
 #define STARTNODE	'1'//1表示起点
 #define ENDNODE		'2'//2表示终点
-#define BARRIER		'3'//3表示障碍
+#define BARRIER		'#'//3表示障碍
 
 typedef struct p_node{
     bool isBlock;

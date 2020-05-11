@@ -161,8 +161,11 @@ int Maze::randInt(int t) {//随机一个从0-(t-1)的整数
 void Maze::run() {
     std::vector<Spirit *> *lastScene = renderer->getScene();
     std::vector<Spirit *> scene(0);
+    Animation destinationAnimation = Spirit::loadAnimation("../resource/Destination.txt");
+    Spirit destinationSpirit(end_x, end_y, destinationAnimation);
     Spirit s = getBackground();
     scene.push_back(&s);
+    scene.push_back(&destinationSpirit);
     for (int i = 0; i < guards.size(); ++i) {
         scene.push_back(guards[i].getSpirit());
     }
@@ -173,39 +176,47 @@ void Maze::run() {
     int t_x = 0;
     int t_y = 0;
     do{
-        if (_kbhit()){
-            t_x = 0;
-            t_y = 0;
-            flag = _getch();
-            switch (flag) {
-                case 72:    //up
-                    t_y = -1;
-                    break;
-                case 77:    //right
-                    t_x = 1;
-                    break;
-                case 80:    //down
-                    t_y = 1;
-                    break;
-                case 75:    //left
-                    t_x = -1;
-                    break;
-                case 'q':
-                    return;
-            }
-            int p_x, p_y;
-            player.getPos(&p_x, &p_y);
-            p_x += t_x;
-            p_y += t_y;
-            if (map.checkAvailable(p_x, p_y)){
-                player.move(t_x, t_y);
-                for (auto & guard : guards) {
-                    guard.chaseEnemy(p_x - t_x, p_y - t_y);
+        t_x = 0;
+        t_y = 0;
+        flag = getch();
+        switch (flag) {
+            case 72:    //up
+                t_y = -1;
+                break;
+            case 77:    //right
+                t_x = 1;
+                break;
+            case 80:    //down
+                t_y = 1;
+                break;
+            case 75:    //left
+                t_x = -1;
+                break;
+            default:
+                continue;
+        }
+        flag = 0;
+        int p_x, p_y;
+        player.getPos(&p_x, &p_y);
+        p_x += t_x;
+        p_y += t_y;
+        if (map.checkAvailable(p_x, p_y)){
+            player.move(t_x, t_y);
+            if (checkStop()){
+                if (player.isAlive){
+                  status = WIN;
                 }
+                else{
+                    status = LOSS;
+                }
+                break;
+            }
+            for (auto & guard : guards) {
+                guard.chaseEnemy(p_x - t_x, p_y - t_y);
             }
         }
     }while (flag != 27);
-    renderer->changeScene(*lastScene);
+//    renderer->changeScene(*lastScene);
 }
 
 Spirit Maze::getBackground() {
@@ -226,4 +237,26 @@ void Maze::update() {
     for (auto & guard : guards) {
         guard.chaseEnemy(0,0);
     }
+}
+
+bool Maze::checkStop() {
+    int playerX, playerY;
+    player.getPos(&playerX, &playerY);
+    if (playerX == end_x && playerY == end_y){
+        player.isAlive = true;
+        return true;
+    }
+    for(auto guard : guards){
+        int guardX, guardY;
+        guard.getPos(&guardX, &guardY);
+        if (guardX == playerX && guardY == playerY){
+            player.isAlive = false;
+            return true;
+        }
+    }
+    return false;
+}
+
+int Maze::getStatus() const {
+    return status;
 }

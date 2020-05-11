@@ -29,6 +29,9 @@ int main() {
 //    };
 //    Astar t(array, 10, 10, {0,0}, {0, 0});
 //    Guard g(0, 0, array, 10, 10);
+//    while (1){
+//        g.chaseEnemy(4, 9);
+//    }
 //    auto l = t.get_path({0,0}, {4,9});
 //    for (auto i : l){
 //        std::cout << "(" << i->x << ", " << i->y << ")" << std::endl;
