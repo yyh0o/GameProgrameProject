@@ -14,7 +14,7 @@
 
 #define STARTNODE	'1'//1表示起点
 #define ENDNODE		'2'//2表示终点
-#define BARRIER		'#'//3表示障碍
+#define BARRIER		'#'//#表示障碍
 
 typedef struct p_node{
     bool isBlock;
@@ -37,13 +37,24 @@ class Astar {
     node *map{};
 
     std::list<node*> openlist;
-
+    /**
+     * 计算权重f
+     * @param o_node 起点坐标
+     * @param d_node 目的坐标
+     * @return 权重值
+     */
     static double get_distance(node* o_node, node* d_node);
 public:
     Astar(const char* origin_map,int w, int h, COORD start, COORD end);
 
     Astar();
 
+    /**
+     * 获取路径
+     * @param start 起点节点
+     * @param end 终点节点
+     * @return Astar计算结果
+     */
     std::list<const node*> get_path(node* start, node* end);
 
     std::list<const node*> get_path();

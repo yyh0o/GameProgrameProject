@@ -1,39 +1,12 @@
-#include <iostream>
-#include <conio.h>
 #include "Renderer.h"
 #include "Controller.h"
-#include "windows.h"
-#include "Spirit.h"
-#include "config.h"
-#include "Astar.h"
+
 
 
 int main() {
-    Renderer renderer(100, 50);
-    Controller controller(renderer);
-//    controller.test();
-    controller.run();
+    Renderer renderer(100, 50); // 初始化renderer
+    Controller controller(renderer);    // 初始化controller
+    controller.run();                       //开始游戏
     return 0;
 
-//    char array[] = {			// 实例
-//             '1','0','0','3','0','3','0','0','0','0' ,
-//             '0','0','3','0','0','3','0','3','0','3' ,
-//             '3','0','0','0','0','3','3','3','0','3' ,
-//             '3','0','3','0','0','0','0','0','0','3' ,
-//             '3','0','0','0','0','3','0','0','0','3' ,
-//             '3','0','0','3','0','0','0','3','0','3' ,
-//             '3','0','0','0','0','3','3','0','0','0' ,
-//             '0','0','0','0','0','0','0','0','0','0' ,
-//             '3','3','3','0','0','3','0','3','0','3' ,
-//             '3','0','0','0','2','3','3','3','0','3'
-//    };
-//    Astar t(array, 10, 10, {0,0}, {0, 0});
-//    Guard g(0, 0, array, 10, 10);
-//    while (1){
-//        g.chaseEnemy(4, 9);
-//    }
-//    auto l = t.get_path({0,0}, {4,9});
-//    for (auto i : l){
-//        std::cout << "(" << i->x << ", " << i->y << ")" << std::endl;
-//    }
 }

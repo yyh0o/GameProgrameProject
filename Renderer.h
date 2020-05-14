@@ -36,13 +36,32 @@ public:
     void timeBat();
     Renderer(int width, int height);
     void flash(Frame* buffer) const;
+    /**
+     * 将图像绘制到另一张图像
+     * @param source_frame 源图像
+     * @param des_frame 目标图像
+     * @param x 相对坐标x
+     * @param y 相对坐标y
+     * @param w 源图像宽度
+     * @param h 源图像高度
+     */
     static void drawFrame(Frame *source_frame, Frame *des_frame, int x, int y, int w, int h);
+
+    /**
+     * 将图像绘制到Spirit
+     * @param des_frame 源图像
+     * @param spirit 目的精灵
+     */
     static void drawSpirit(Frame* des_frame, Spirit &spirit);
     std::vector<Spirit *> *getScene();
     void addSpirit(Spirit &spirit);
     void updateBackground(Spirit &background);
     void updateForeground(Spirit &foreground);
 
+    /**
+     * 切换场景
+     * @param scene 待切换场景
+     */
     void changeScene(std::vector<Spirit *> &scene);
 
     static DWORD WINAPI renderer_update(LPVOID lpParameter);

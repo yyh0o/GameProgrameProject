@@ -59,6 +59,13 @@ class Maze {
 
 public:
     Maze();
+    /**
+     * 迷宫构造函数
+     * @param n 迷宫编号
+     * @param size 迷宫大小
+     * @param guard_amount 守卫数量
+     * @param r 渲染器
+     */
     Maze(int n, int size, int guard_amount, Renderer *r);
     void show();
 

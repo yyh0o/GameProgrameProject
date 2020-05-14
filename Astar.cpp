@@ -76,7 +76,6 @@ std::list<const node*> Astar::get_path(node *start, node *end) {
                         }
                     }
                 }
-
             }
         }
         for(auto item = openlist.begin(); item != openlist.end(); item++){
